@@ -386,7 +386,17 @@ class ApplyCouponView(APIView):
         with connection.cursor() as cursor:
             try:
                 cursor.execute(
-                    "SELECT coupon_code from applied_coupon WHERE user_id = "
+import sqlite3
+
+user_id = 1  # Example user_id
+conn = sqlite3.connect('database.db')
+cursor = conn.cursor()
+
+query = "SELECT coupon_code FROM applied_coupon WHERE user_id = ?"
+cursor.execute(query, (user_id,))
+results = cursor.fetchall()
+
+conn.close()
                     + str(user.id)
                     + " AND coupon_code = '"
                     + coupon_request_body["coupon_code"]
