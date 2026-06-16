@@ -386,7 +386,9 @@ class ApplyCouponView(APIView):
         with connection.cursor() as cursor:
             try:
                 cursor.execute(
-                    "SELECT coupon_code from applied_coupon WHERE user_id = "
+user_id = get_user_id()  # Assume this function safely retrieves the user ID
+query = "SELECT coupon_code FROM applied_coupon WHERE user_id = %s"
+cursor.execute(query, (user_id,))
                     + str(user.id)
                     + " AND coupon_code = '"
                     + coupon_request_body["coupon_code"]
